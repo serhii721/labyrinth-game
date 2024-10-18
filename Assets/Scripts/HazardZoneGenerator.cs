@@ -6,7 +6,6 @@ public class HazardZoneGenerator : MonoBehaviour
 {
     public GameObject hazardPrefab;
     public int numberOfHazards;
-    public float minX, maxX, minZ, maxZ; // Restrictions for zone generation
 
     void Start()
     {
@@ -24,7 +23,7 @@ public class HazardZoneGenerator : MonoBehaviour
             {
                 randomX = Random.Range(1, mazeGrid.GetLength(1));
                 randomZ = Random.Range(1, mazeGrid.GetLength(0));
-            } while (mazeGrid[randomX, randomZ]);
+            } while (mazeGrid[randomX, randomZ] && (randomX != 1 && randomZ != 1) && (randomX != 10 && randomZ != 10)); // Empty space and not starting and ending points
 
             // Create hazard zone
             Vector3 position = new Vector3(randomX, 0.05f, randomZ); // Y = 0.05 to avoid collision with the floor
