@@ -50,18 +50,20 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
+        Debug.Log("Player died");
         StopAllCoroutines();
+        path.Clear();
         // Animation
         PlayerExplosion playerExplosion = GetComponent<PlayerExplosion>();
         if (playerExplosion != null)
             playerExplosion.Explode();
 
-        Debug.Log("Player died");
         Respawn();
     }
 
     public void Respawn()
-    { 
+    {
+        Debug.Log("Respawning player");
         // Restoring starting position and rotation
         transform.position = new Vector3(1, 0.51f, 1);
         transform.rotation = new Quaternion(0, 0, 0, 0);

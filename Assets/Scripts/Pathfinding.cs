@@ -63,6 +63,7 @@ public class Pathfinding : MonoBehaviour
             // If path is found - return it
             if (currentNode == targetNode)
             {
+                Debug.Log("Path found");
                 return RetracePath(startNode, targetNode);
             }
 
@@ -84,6 +85,7 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Path not found");
         return null;  // Path is not found
     }
 

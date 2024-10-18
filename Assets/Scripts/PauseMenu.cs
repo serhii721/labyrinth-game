@@ -29,6 +29,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
+        Debug.Log("Game resumed");
         StartCoroutine(UnfadeFromBlack());
         ToggleScreenUIs();
         Time.timeScale = 1f; // Starting time
@@ -37,6 +38,7 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
+        Debug.Log("Game paused");
         StartCoroutine(FadeToBlack());
         ToggleScreenUIs();
         Time.timeScale = 0f; // Stoping time

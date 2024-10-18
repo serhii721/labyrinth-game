@@ -50,6 +50,7 @@ public class MazeGenerator : MonoBehaviour
         } while (Pathfinding.Instance.FindPath(start, target, grid) == null);
         // After grid generation - building visual walls
         BuildMaze();
+        Debug.Log("Maze generated");
         // Generating hazard zones
         FindObjectOfType<HazardZoneGenerator>().GenerateHazardZones(grid);
     }

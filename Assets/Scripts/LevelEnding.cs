@@ -37,6 +37,7 @@ public class LevelEnding : MonoBehaviour
 
     IEnumerator FadeOutAndReset()
     {
+        Debug.Log("Restarting level");
         // Fade out
         float elapsedTime = 0f;
         while (elapsedTime < fadeDuration)

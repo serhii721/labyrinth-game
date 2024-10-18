@@ -28,6 +28,7 @@ public class HazardZoneGenerator : MonoBehaviour
             GameObject zone = Instantiate(hazardPrefab, position, Quaternion.identity);
             zones.Add(zone);
         }
+        Debug.Log("Hazard zones generated");
     }
 
     private bool IsAvailablePosition(bool[,] mazeGrid, int x, int z)

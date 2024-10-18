@@ -32,6 +32,7 @@ public class PlayerShield : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         if (shieldCoroutine == null) // If shield is not activated
         {
+            Debug.Log("Shield activated");
             shieldCoroutine = StartCoroutine(ActivateShield());
         }
     }
@@ -40,6 +41,7 @@ public class PlayerShield : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         if (shieldCoroutine != null) // Deactivating shield
         {
+            Debug.Log("Shield deactivated");
             StopCoroutine(shieldCoroutine);
             shieldCoroutine = null;
             playerRenderer.material.color = originalColor; // Returning original color
