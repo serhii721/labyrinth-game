@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Transform startPosition;
-
     private PlayerShield playerShield;
 
     public float moveSpeed = 5f;
@@ -52,7 +50,12 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        // TODO: Animation
+        StopAllCoroutines();
+        // Animation
+        PlayerExplosion playerExplosion = GetComponent<PlayerExplosion>();
+        if (playerExplosion != null)
+            playerExplosion.Explode();
+
         Debug.Log("Player died");
         Respawn();
     }
@@ -60,7 +63,8 @@ public class PlayerController : MonoBehaviour
     void Respawn()
     { 
         // Restoring starting position and rotation
-        transform.position = startPosition.position;
-        transform.rotation = startPosition.rotation;
+        transform.position = new Vector3(1, 0.51f, 1);
+        transform.rotation = new Quaternion(0, 0, 0, 0);
+        Invoke("StartMoving", 2f); // 2 seconds delay before movement
     }
 }
