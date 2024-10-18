@@ -21,11 +21,8 @@ public class MazeGenerator : MonoBehaviour
         // Regenerating maze until there is a clear path to finish
         Vector2Int start = new Vector2Int(1, 1); // Player's coordinates
         Vector2Int target = new Vector2Int(10, 10); // Exit coordinates
-        int i = 0;
         do
         {
-            Debug.Log($"{i} try");
-            i++;
             // Random walls generation
             for (int x = 0; x < width; x++)
             {
@@ -47,7 +44,6 @@ public class MazeGenerator : MonoBehaviour
                 }
             }
         } while (Pathfinding.Instance.FindPath(start, target, grid) == null);
-        
         // After grid generation - building visual walls
         BuildMaze();
     }

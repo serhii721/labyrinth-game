@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Transform startPosition;
+
+    private PlayerShield playerShield;
+
     public float moveSpeed = 5f;
     private List<Node> path;
 
     void Start()
     {
+        playerShield = GetComponent<PlayerShield>();
         Invoke("StartMoving", 2f); // 2 seconds delay before movement
     }
 
@@ -35,5 +40,27 @@ public class PlayerController : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Hazard") && !playerShield.IsShieldActive())
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        // TODO: Animation
+        Debug.Log("Player died");
+        Respawn();
+    }
+
+    void Respawn()
+    { 
+        // Restoring starting position and rotation
+        transform.position = startPosition.position;
+        transform.rotation = startPosition.rotation;
     }
 }
