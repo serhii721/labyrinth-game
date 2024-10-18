@@ -9,13 +9,17 @@ public class MazeGenerator : MonoBehaviour
     public int height = 12;
     private bool[,] grid;
 
+    private List<GameObject> walls = new List<GameObject>();
+
     void Start()
     {
         GenerateMaze();
     }
 
-    void GenerateMaze()
+    public void GenerateMaze()
     {
+        ClearOldMaze();
+
         grid = new bool[width, height];
 
         // Regenerating maze until there is a clear path to finish
@@ -61,10 +65,20 @@ public class MazeGenerator : MonoBehaviour
                 {
                     // Calculate wall position
                     Vector3 position = new Vector3(x, 0.5f, z);
-                    Instantiate(wallPrefab, position, Quaternion.identity); // Spawn wall prefab
+                    GameObject wall = Instantiate(wallPrefab, position, Quaternion.identity); // Spawn wall prefab
+                    walls.Add(wall);
                 }
             }
         }
+    }
+
+    void ClearOldMaze()
+    {
+        // Deleting walls that were created before
+        foreach (GameObject wall in walls)
+            Destroy(wall);
+
+        walls.Clear();
     }
 
     public bool[,] GetGrid()

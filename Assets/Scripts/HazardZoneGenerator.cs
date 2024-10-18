@@ -7,8 +7,11 @@ public class HazardZoneGenerator : MonoBehaviour
     public GameObject hazardPrefab;
     public int numberOfHazards;
 
+    private List<GameObject> zones = new List<GameObject>();
+
     public void GenerateHazardZones(bool[,] mazeGrid)
     {
+        ClearOldZones();
         for (int i = 0; i < numberOfHazards; ++i)
         {
             // Regenerate position until there's no wall
@@ -22,7 +25,8 @@ public class HazardZoneGenerator : MonoBehaviour
 
             // Create hazard zone
             Vector3 position = new Vector3(randomX, 0.05f, randomZ); // Y = 0.05 to avoid collision with the floor
-            Instantiate(hazardPrefab, position, Quaternion.identity);
+            GameObject zone = Instantiate(hazardPrefab, position, Quaternion.identity);
+            zones.Add(zone);
         }
     }
 
@@ -36,5 +40,14 @@ public class HazardZoneGenerator : MonoBehaviour
         if (x == 10 && z == 10) return false;
 
         return true;
+    }
+
+    private void ClearOldZones()
+    {
+        // Deleting zones that were created before
+        foreach (GameObject zone in zones)
+            Destroy(zone);
+
+        zones.Clear();
     }
 }

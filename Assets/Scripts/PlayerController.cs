@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
         Respawn();
     }
 
-    void Respawn()
+    public void Respawn()
     { 
         // Restoring starting position and rotation
         transform.position = new Vector3(1, 0.51f, 1);
