@@ -2,29 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class PlayerShield : MonoBehaviour
+public class PlayerShield : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public Button shieldButton;
+    public float shieldDuration = 2f;
     private Color originalColor;
     private Renderer playerRenderer;
     private bool isShieldActive = false;
+    private Coroutine shieldCoroutine;
 
     void Start()
     {
         playerRenderer = GetComponent<Renderer>();
-        originalColor = playerRenderer.material.color;
-
-        shieldButton.onClick.AddListener(() => StartCoroutine(ActivateShield()));
+        originalColor = playerRenderer.material.color; // Saving player's original color
     }
 
-    IEnumerator ActivateShield()
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        Activate();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        Deactivate();
+    }
+
+    public void Activate()
+    {
+        if (shieldCoroutine == null) // If shield is not activated
+        {
+            shieldCoroutine = StartCoroutine(ActivateShield());
+        }
+    }
+
+    public void Deactivate()
+    {
+        if (shieldCoroutine != null) // Deactivating shield
+        {
+            StopCoroutine(shieldCoroutine);
+            shieldCoroutine = null;
+            playerRenderer.material.color = originalColor; // Returning original color
+            isShieldActive = false;
+        }
+    }
+
+    private IEnumerator ActivateShield()
     {
         isShieldActive = true;
-        playerRenderer.material.color = new Color(173f / 255f, 255f / 255f, 47f / 255f); // #ADFF2F - player's color while shield is activated
-        yield return new WaitForSeconds(2);
-        playerRenderer.material.color = originalColor;
+        playerRenderer.material.color = new Color(173f / 255f, 255f / 255f, 47f / 255f); // #ADFF2F - player's color with activated shield
+        yield return new WaitForSeconds(shieldDuration); // Activating shield for 2 seconds
+        playerRenderer.material.color = originalColor; // Returning original color
         isShieldActive = false;
+        shieldCoroutine = null;
     }
 
     public bool IsShieldActive()
