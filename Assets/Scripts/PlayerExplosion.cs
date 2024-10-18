@@ -9,7 +9,7 @@ public class PlayerExplosion : MonoBehaviour
     public float explosionForce = 300f;
     public float explosionRadius = 1f;
     public float cubeSize = 0.1f;
-    public float cubeLifetime = 3f;
+    public float cubeLifetime = 2f;
 
     // Method for activation of explosion
     public void Explode()
