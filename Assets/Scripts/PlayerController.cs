@@ -5,8 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    private List<Vector3> path;
-    private int targetIndex;
+    private List<Node> path;
 
     void Start()
     {
@@ -15,24 +14,26 @@ public class PlayerController : MonoBehaviour
 
     void StartMoving()
     {
-        // TODO
+        // Getting labyrinth
+        bool[,] maze = FindObjectOfType<MazeGenerator>().GetGrid();
         // Getting path to end point
-        path = Pathfinding.Instance.FindPath(transform.position, new Vector3(10, 0, 10));
-        targetIndex = 0;
+        Vector2Int start = new Vector2Int(1, 1); // Player's coordinates
+        Vector2Int target = new Vector2Int(10, 10); // Exit coordinates
+        path = Pathfinding.Instance.FindPath(start, target, maze); // Finding path
+        // Starting movement
         StartCoroutine(MoveAlongPath());
     }
 
     IEnumerator MoveAlongPath()
     {
-        while (targetIndex < path.Count)
+        foreach (Node node in path)
         {
-            Vector3 targetPos = path[targetIndex];
-            while (transform.position != targetPos)
+            Vector3 targetPosition = new Vector3(node.position.x, transform.position.y, node.position.y);
+            while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * moveSpeed);
                 yield return null;
             }
-            targetIndex++;
         }
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class MazeGenerator : MonoBehaviour
 {
     public GameObject wallPrefab;
-    public int width = 10;
-    public int height = 10;
-    private int[,] grid;
+    public int width = 12;
+    public int height = 12;
+    private bool[,] grid;
 
     void Start()
     {
@@ -16,26 +16,38 @@ public class MazeGenerator : MonoBehaviour
 
     void GenerateMaze()
     {
-        grid = new int[width, height];
+        grid = new bool[width, height];
 
-        // Random walls generation
-        for (int x = 0; x < width; x++)
+        // Regenerating maze until there is a clear path to finish
+        Vector2Int start = new Vector2Int(1, 1); // Player's coordinates
+        Vector2Int target = new Vector2Int(10, 10); // Exit coordinates
+        int i = 0;
+        do
         {
-            for (int z = 0; z < height; z++)
+            Debug.Log($"{i} try");
+            i++;
+            // Random walls generation
+            for (int x = 0; x < width; x++)
             {
-                // Walls are always on edges
-                if (x == 0 || x == width - 1 || z == 0 || z == height - 1)
+                for (int z = 0; z < height; z++)
                 {
-                    grid[x, z] = 1; // Place wall
-                }
-                else
-                {
-                    // Filling internal blocks with walls with 30% chance
-                    grid[x, z] = (Random.value < 0.3f) ? 1 : 0;
+                    if (x == 0 || x == width - 1 || z == 0 || z == height - 1) // Walls are always on edges
+                    {
+                        grid[x, z] = true; // Place wall
+                    }
+                    else if ((x == 1 && z == 1) || (x == 10 & z == 10)) // Start and end points are always empty
+                    {
+                        grid[x, z] = false; // Leave empty space
+                    }
+                    else
+                    {
+                        // Filling internal blocks with walls with 30% chance
+                        grid[x, z] = (Random.value < 0.3f) ? true : false;
+                    }
                 }
             }
-        }
-
+        } while (Pathfinding.Instance.FindPath(start, target, grid) == null);
+        
         // After grid generation - building visual walls
         BuildMaze();
     }
@@ -47,7 +59,7 @@ public class MazeGenerator : MonoBehaviour
         {
             for (int z = 0; z < height; z++)
             {
-                if (grid[x, z] == 1) // If cell contains wall
+                if (grid[x, z] == true) // If cell contains wall
                 {
                     // Calculate wall position
                     Vector3 position = new Vector3(x, 0.5f, z);
@@ -55,5 +67,10 @@ public class MazeGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool[,] GetGrid()
+    {
+        return grid;
     }
 }
